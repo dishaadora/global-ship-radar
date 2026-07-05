@@ -132,29 +132,29 @@
                     <label
                         class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
                         <input type="checkbox" id="filter-cargo" checked
-                            class="rounded border-slate-700 text-blue-600 focus:ring-blue-500 bg-slate-900">
-                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
+                            class="rounded border-slate-700 text-red-500 focus:ring-red-500 bg-slate-900">
+                        <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: #F1444E;"></span>
                         <span class="text-slate-300">Cargo</span>
                     </label>
                     <label
                         class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
                         <input type="checkbox" id="filter-tanker" checked
-                            class="rounded border-slate-700 text-red-600 focus:ring-red-500 bg-slate-900">
-                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
+                            class="rounded border-slate-700 text-teal-500 focus:ring-teal-500 bg-slate-900">
+                        <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: #80B9B1;"></span>
                         <span class="text-slate-300">Tanker</span>
                     </label>
                     <label
                         class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
                         <input type="checkbox" id="filter-fishing" checked
-                            class="rounded border-slate-700 text-green-600 focus:ring-green-500 bg-slate-900">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                            class="rounded border-slate-700 text-amber-500 focus:ring-amber-500 bg-slate-900">
+                        <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: #FBB45E;"></span>
                         <span class="text-slate-300">Fishing</span>
                     </label>
                     <label
                         class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
                         <input type="checkbox" id="filter-other" checked
-                            class="rounded border-slate-700 text-gray-500 focus:ring-gray-500 bg-slate-900">
-                        <span class="w-2.5 h-2.5 rounded-full bg-gray-400 inline-block"></span>
+                            class="rounded border-slate-700 text-blue-500 focus:ring-blue-500 bg-slate-900">
+                        <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: #3b82f6;"></span>
                         <span class="text-slate-300">Other</span>
                     </label>
                 </div>
@@ -286,10 +286,10 @@
 
         // Ship configuration (colors and icons)
         const shipConfig = {
-            'Cargo': { color: '#3b82f6', border: '#1d4ed8' },   // Blue
-            'Tanker': { color: '#ef4444', border: '#b91c1c' },  // Red
-            'Fishing': { color: '#10b981', border: '#047857' }, // Emerald/Green
-            'Other': { color: '#9ca3af', border: '#4b5563' }    // Gray
+            'Cargo': { color: '#F1444E', border: '#C02C35' },   // Red-pink
+            'Tanker': { color: '#80B9B1', border: '#548A82' },  // Soft Teal
+            'Fishing': { color: '#FBB45E', border: '#D08E3B' }, // Warm Yellow-orange
+            'Other': { color: '#3b82f6', border: '#1d4ed8' }    // Blue
         };
 
         // Initialize Map
@@ -447,7 +447,7 @@
                     labels: ['Cargo', 'Tanker', 'Fishing', 'Other'],
                     datasets: [{
                         data: [0, 0, 0, 0],
-                        backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#9ca3af'],
+                        backgroundColor: ['#F1444E', '#80B9B1', '#FBB45E', '#3b82f6'],
                         borderColor: '#0f172a',
                         borderWidth: 2
                     }]
@@ -475,8 +475,8 @@
                     datasets: [{
                         label: 'Vessel Count',
                         data: [0, 0, 0, 0],
-                        backgroundColor: ['#3b82f6/80', '#ef4444/80', '#10b981/80', '#9ca3af/80'],
-                        borderColor: ['#3b82f6', '#ef4444', '#10b981', '#9ca3af'],
+                        backgroundColor: ['rgba(241, 68, 78, 0.8)', 'rgba(128, 185, 177, 0.8)', 'rgba(251, 180, 94, 0.8)', 'rgba(59, 130, 246, 0.8)'],
+                        borderColor: ['#F1444E', '#80B9B1', '#FBB45E', '#3b82f6'],
                         borderWidth: 1.5,
                         borderRadius: 4
                     }]
