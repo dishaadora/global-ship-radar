@@ -38,11 +38,11 @@ The `src/generator.py` script mimics live ship traffic routes, generating realis
 
 ## 3. Project Architecture
 
-The system utilizes a modern decoupled three-tier architecture:
+The system utilizes a decoupled three-tier architecture:
 
 ```mermaid
 graph TD
-    A[generator.py - Simulates Telemetry] -->|raw_ais_data.csv| B(pipeline.py - Cleaning & Ingest)
+    A[generator.py - Simulates Telemetry] -->|raw_ais_data.json| B(pipeline.py - Cleaning & Ingest)
     B -->|SQL Queries| C[(ships.db - SQLite)]
     C -->|Read Data| D[main.py - FastAPI Server]
     D -->|GET /api/ships| E[index.html - Leaflet.js Map]
@@ -76,14 +76,14 @@ Generate mock vessel data containing telemetry anomalies:
 ```powershell
 python src/generator.py
 ```
-This generates a file named `raw_ais_data.csv` in the root of your directory.
+This generates a file named `raw_ais_data.json` in the root of your directory.
 
 ### Step 3: Run Ingestion & Sanitization Pipeline
 Load raw telemetry, clean it, and load it into the database:
 ```powershell
 python src/pipeline.py
 ```
-This processes the csv and creates a structured relational database named `ships.db`.
+This processes the JSON and creates a structured relational database named `ships.db`.
 
 ### Step 4: Run Data Integrity Checks
 Verify that coordinates, timestamp formats, and category maps are correct:

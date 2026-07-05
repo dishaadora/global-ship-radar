@@ -4,6 +4,8 @@ import sqlite3
 from typing import Optional, List, Dict, Any
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app = FastAPI(
     title="Maritime Radar Tracking API",
@@ -20,7 +22,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ships.db")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "ships.db")
 
 def get_db_connection():
     if not os.path.exists(DB_PATH):
@@ -34,6 +37,12 @@ def get_db_connection():
 
 @app.get("/")
 def read_root():
+    """
+    Serves the frontend dashboard index.html at the root URL.
+    """
+    index_path = os.path.join(BASE_DIR, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
     return {"message": "Maritime Radar Tracking System API is running."}
 
 @app.get("/api/ships")

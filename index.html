@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,11 +24,9 @@
     </script>
     <!-- Leaflet.js CSS and JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <!-- Leaflet.heat Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
     <!-- Chart.js -->
@@ -38,26 +37,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
+
         /* Custom scrollbar for sidebar and scrollable containers */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: rgba(15, 23, 42, 0.3);
         }
+
         ::-webkit-scrollbar-thumb {
             background: rgba(100, 116, 139, 0.5);
             border-radius: 4px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(148, 163, 184, 0.8);
         }
+
         /* Custom Leaflet popup styling to match dark theme */
         .leaflet-popup-content-wrapper {
             background: #1e293b !important;
@@ -66,16 +70,19 @@
             border-radius: 0.75rem !important;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
         }
+
         .leaflet-popup-tip {
             background: #1e293b !important;
             border: 1px solid rgba(148, 163, 184, 0.2);
         }
     </style>
 </head>
+
 <body class="bg-navy-950 text-slate-100 h-screen w-screen overflow-hidden flex flex-col md:flex-row">
 
     <!-- Sidebar -->
-    <aside class="w-full md:w-[380px] h-[40%] md:h-full bg-slate-900/95 backdrop-blur-md border-b md:border-b-0 md:border-r border-slate-800 flex flex-col z-10 flex-shrink-0">
+    <aside
+        class="w-full md:w-[380px] h-[40%] md:h-full bg-slate-900/95 backdrop-blur-md border-b md:border-b-0 md:border-r border-slate-800 flex flex-col z-10 flex-shrink-0">
         <!-- Header -->
         <div class="p-5 border-b border-slate-800 flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -87,7 +94,8 @@
                     <span class="text-[10px] text-slate-400">Strait of Hormuz & Arabian Sea</span>
                 </div>
             </div>
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-500/10 text-green-400 border border-green-500/20 animate-pulse">
+            <span
+                class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-500/10 text-green-400 border border-green-500/20 animate-pulse">
                 Live
             </span>
         </div>
@@ -100,7 +108,8 @@
             </div>
             <div class="bg-slate-800/40 border border-slate-800/60 p-2.5 rounded-lg">
                 <span class="text-[10px] text-slate-400 block mb-0.5">Avg Speed</span>
-                <span id="stat-avg-speed" class="text-lg font-bold text-white">- <span class="text-[11px] font-normal text-slate-400">kn</span></span>
+                <span id="stat-avg-speed" class="text-lg font-bold text-white">- <span
+                        class="text-[11px] font-normal text-slate-400">kn</span></span>
             </div>
         </div>
 
@@ -111,32 +120,40 @@
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
                     <i class="fa-solid fa-magnifying-glass text-xs"></i>
                 </span>
-                <input type="text" id="search-input" 
-                       placeholder="Search Name or MMSI..." 
-                       class="w-full bg-slate-950 border border-slate-800 rounded-lg py-1.5 pl-9 pr-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors">
+                <input type="text" id="search-input" placeholder="Search Name or MMSI..."
+                    class="w-full bg-slate-950 border border-slate-800 rounded-lg py-1.5 pl-9 pr-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors">
             </div>
 
             <!-- Categories Toggle Checkboxes -->
             <div>
-                <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-2">Vessel Categories</span>
+                <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-2">Vessel
+                    Categories</span>
                 <div class="grid grid-cols-2 gap-2 text-xs">
-                    <label class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
-                        <input type="checkbox" id="filter-cargo" checked class="rounded border-slate-700 text-blue-600 focus:ring-blue-500 bg-slate-900">
+                    <label
+                        class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
+                        <input type="checkbox" id="filter-cargo" checked
+                            class="rounded border-slate-700 text-blue-600 focus:ring-blue-500 bg-slate-900">
                         <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
                         <span class="text-slate-300">Cargo</span>
                     </label>
-                    <label class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
-                        <input type="checkbox" id="filter-tanker" checked class="rounded border-slate-700 text-red-600 focus:ring-red-500 bg-slate-900">
+                    <label
+                        class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
+                        <input type="checkbox" id="filter-tanker" checked
+                            class="rounded border-slate-700 text-red-600 focus:ring-red-500 bg-slate-900">
                         <span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
                         <span class="text-slate-300">Tanker</span>
                     </label>
-                    <label class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
-                        <input type="checkbox" id="filter-fishing" checked class="rounded border-slate-700 text-green-600 focus:ring-green-500 bg-slate-900">
+                    <label
+                        class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
+                        <input type="checkbox" id="filter-fishing" checked
+                            class="rounded border-slate-700 text-green-600 focus:ring-green-500 bg-slate-900">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
                         <span class="text-slate-300">Fishing</span>
                     </label>
-                    <label class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
-                        <input type="checkbox" id="filter-other" checked class="rounded border-slate-700 text-gray-500 focus:ring-gray-500 bg-slate-900">
+                    <label
+                        class="flex items-center space-x-2 bg-slate-950/40 px-2 py-1.5 rounded-md border border-slate-800/50 cursor-pointer hover:border-slate-700 transition-colors">
+                        <input type="checkbox" id="filter-other" checked
+                            class="rounded border-slate-700 text-gray-500 focus:ring-gray-500 bg-slate-900">
                         <span class="w-2.5 h-2.5 rounded-full bg-gray-400 inline-block"></span>
                         <span class="text-slate-300">Other</span>
                     </label>
@@ -148,7 +165,8 @@
         <div class="flex-1 overflow-y-auto min-h-0">
             <div class="p-3 border-b border-slate-800 bg-slate-950/30 flex items-center justify-between">
                 <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Vessels in Area</span>
-                <span id="vessel-list-count" class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full">0</span>
+                <span id="vessel-list-count"
+                    class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full">0</span>
             </div>
             <ul id="vessel-list" class="divide-y divide-slate-800/60">
                 <!-- Dynamic vessel items go here -->
@@ -159,17 +177,18 @@
 
     <!-- Main Content Panel (Map & Analytics tabbed interface) -->
     <main class="flex-1 h-[60%] md:h-full flex flex-col min-w-0 relative">
-        
+
         <!-- Tab Header Bar -->
-        <div class="h-14 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 flex-shrink-0 z-20">
+        <div
+            class="h-14 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 flex-shrink-0 z-20">
             <div class="flex items-center space-x-2">
-                <button id="tab-map-btn" 
-                        class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-blue-600/20 text-blue-400 border border-blue-500/30 transition-all flex items-center space-x-2">
+                <button id="tab-map-btn"
+                    class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-blue-600/20 text-blue-400 border border-blue-500/30 transition-all flex items-center space-x-2">
                     <i class="fa-solid fa-map-location-dot"></i>
                     <span>Map View</span>
                 </button>
-                <button id="tab-analytics-btn" 
-                        class="px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent hover:border-slate-800 transition-all flex items-center space-x-2">
+                <button id="tab-analytics-btn"
+                    class="px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent hover:border-slate-800 transition-all flex items-center space-x-2">
                     <i class="fa-solid fa-chart-pie"></i>
                     <span>Analytics Dashboard</span>
                 </button>
@@ -184,20 +203,21 @@
 
         <!-- Panel Contents -->
         <div class="flex-1 w-full h-full relative min-h-0">
-            
+
             <!-- Map Pane (Default) -->
             <div id="pane-map" class="absolute inset-0 w-full h-full">
                 <div id="map" class="h-full w-full bg-slate-950"></div>
-                
+
                 <!-- Density Heatmap Toggle Button -->
-                <button id="btn-toggle-heatmap" 
-                        class="absolute top-4 left-4 bg-slate-900/90 hover:bg-slate-800 backdrop-blur-md border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white px-3.5 py-2.5 rounded-lg z-[1000] text-xs font-bold flex items-center space-x-2 shadow-xl transition-all pointer-events-auto">
+                <button id="btn-toggle-heatmap"
+                    class="absolute top-4 left-4 bg-slate-900/90 hover:bg-slate-800 backdrop-blur-md border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white px-3.5 py-2.5 rounded-lg z-[1000] text-xs font-bold flex items-center space-x-2 shadow-xl transition-all pointer-events-auto">
                     <i class="fa-solid fa-fire text-slate-400" id="heatmap-icon"></i>
                     <span id="heatmap-btn-text">Enable Density Heatmap</span>
                 </button>
 
                 <!-- Legend Overlay (Top Right) -->
-                <div class="absolute top-4 right-4 bg-slate-900/90 backdrop-blur-md border border-slate-800 px-4 py-3 rounded-lg z-[1000] text-[10px] pointer-events-none hidden md:block">
+                <div
+                    class="absolute top-4 right-4 bg-slate-900/90 backdrop-blur-md border border-slate-800 px-4 py-3 rounded-lg z-[1000] text-[10px] pointer-events-none hidden md:block">
                     <h3 class="font-semibold text-white mb-2 tracking-wide uppercase">Bounding Box Area</h3>
                     <div class="flex flex-col space-y-1.5 text-slate-300">
                         <div class="flex items-center space-x-2">
@@ -213,12 +233,15 @@
             </div>
 
             <!-- Analytics Dashboard Pane (Hidden by Default) -->
-            <div id="pane-analytics" class="absolute inset-0 w-full h-full hidden bg-slate-950 overflow-y-auto p-6 flex flex-col space-y-6">
+            <div id="pane-analytics"
+                class="absolute inset-0 w-full h-full hidden bg-slate-950 overflow-y-auto p-6 flex flex-col space-y-6">
                 <!-- Two-Column Grid for Smaller Charts -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Distribution Chart Card -->
-                    <div class="bg-slate-900 border border-slate-800/80 rounded-xl p-5 shadow-lg flex flex-col h-[320px]">
-                        <h3 class="text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider flex items-center space-x-2">
+                    <div
+                        class="bg-slate-900 border border-slate-800/80 rounded-xl p-5 shadow-lg flex flex-col h-[320px]">
+                        <h3
+                            class="text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider flex items-center space-x-2">
                             <i class="fa-solid fa-chart-pie text-blue-500"></i>
                             <span>Vessel Distribution</span>
                         </h3>
@@ -227,8 +250,10 @@
                         </div>
                     </div>
                     <!-- Bar Chart Card -->
-                    <div class="bg-slate-900 border border-slate-800/80 rounded-xl p-5 shadow-lg flex flex-col h-[320px]">
-                        <h3 class="text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider flex items-center space-x-2">
+                    <div
+                        class="bg-slate-900 border border-slate-800/80 rounded-xl p-5 shadow-lg flex flex-col h-[320px]">
+                        <h3
+                            class="text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider flex items-center space-x-2">
                             <i class="fa-solid fa-chart-bar text-green-500"></i>
                             <span>Vessel Counts by Category</span>
                         </h3>
@@ -240,7 +265,8 @@
 
                 <!-- Line Chart Card (Full Width) -->
                 <div class="bg-slate-900 border border-slate-800/80 rounded-xl p-5 shadow-lg flex flex-col h-[350px]">
-                    <h3 class="text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider flex items-center space-x-2">
+                    <h3
+                        class="text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider flex items-center space-x-2">
                         <i class="fa-solid fa-chart-line text-red-500"></i>
                         <span>Vessel Message Density Timeline (10-Min Intervals)</span>
                     </h3>
@@ -256,7 +282,7 @@
     <!-- App Script -->
     <script>
         // API Base URL
-        const API_BASE_URL = 'http://localhost:8000';
+        const API_BASE_URL = '';
 
         // Ship configuration (colors and icons)
         const shipConfig = {
@@ -292,7 +318,7 @@
 
         // Global State
         let shipsData = [];
-        let markers = {}; 
+        let markers = {};
         let selectedMmsi = null;
         let isHeatmapEnabled = false;
         let heatLayer = null;
@@ -306,7 +332,7 @@
         function createShipIcon(shipCategory, heading) {
             const config = shipConfig[shipCategory] || shipConfig['Other'];
             const rotateDeg = heading && heading !== 511 ? heading : 0;
-            
+
             const svgHtml = `
                 <div style="transform: rotate(${rotateDeg}deg); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; transition: transform 0.8s ease-in-out;">
                     <svg viewBox="0 0 100 100" width="24" height="24" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));">
@@ -318,7 +344,7 @@
                     </svg>
                 </div>
             `;
-            
+
             return L.divIcon({
                 html: svgHtml,
                 className: 'custom-ship-marker',
@@ -330,11 +356,11 @@
         // Toggle Heatmap Overlay
         document.getElementById('btn-toggle-heatmap').addEventListener('click', () => {
             isHeatmapEnabled = !isHeatmapEnabled;
-            
+
             const btn = document.getElementById('btn-toggle-heatmap');
             const text = document.getElementById('heatmap-btn-text');
             const icon = document.getElementById('heatmap-icon');
-            
+
             if (isHeatmapEnabled) {
                 btn.classList.remove('bg-slate-900/90', 'border-slate-800', 'text-slate-300');
                 btn.classList.add('bg-orange-500/20', 'border-orange-500/50', 'text-orange-400');
@@ -354,10 +380,10 @@
 
         function drawHeatmap() {
             removeHeatmap();
-            
+
             // Map coordinates and speeds/weights for heatmap
             const points = shipsData.map(ship => [ship.latitude, ship.longitude, 1.0]);
-            
+
             heatLayer = L.heatLayer(points, {
                 radius: 30,
                 blur: 15,
@@ -389,11 +415,11 @@
             // Button styles
             tabMapBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold bg-blue-600/20 text-blue-400 border border-blue-500/30 transition-all flex items-center space-x-2';
             tabAnalyticsBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent hover:border-slate-800 transition-all flex items-center space-x-2';
-            
+
             // Show/Hide Panes
             paneMap.classList.remove('hidden');
             paneAnalytics.classList.add('hidden');
-            
+
             // Leaflet requires invalidating size after visibility changes
             setTimeout(() => map.invalidateSize(), 50);
         });
@@ -402,7 +428,7 @@
             // Button styles
             tabAnalyticsBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold bg-blue-600/20 text-blue-400 border border-blue-500/30 transition-all flex items-center space-x-2';
             tabMapBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent hover:border-slate-800 transition-all flex items-center space-x-2';
-            
+
             // Show/Hide Panes
             paneAnalytics.classList.remove('hidden');
             paneMap.classList.add('hidden');
@@ -500,8 +526,8 @@
                     scales: {
                         x: {
                             grid: { color: 'rgba(148, 163, 184, 0.08)' },
-                            ticks: { 
-                                color: '#94a3b8', 
+                            ticks: {
+                                color: '#94a3b8',
                                 font: { family: 'Inter', size: 9 },
                                 maxRotation: 45,
                                 minRotation: 45
@@ -539,7 +565,7 @@
                     return parts.length > 1 ? parts[1].substring(0, 5) : t.time;
                 });
                 const countsData = statsData.traffic_trend.map(t => t.count);
-                
+
                 timelineChart.data.labels = labels;
                 timelineChart.data.datasets[0].data = countsData;
                 timelineChart.update();
@@ -552,11 +578,11 @@
                 const response = await fetch(`${API_BASE_URL}/api/dashboard/stats`);
                 if (!response.ok) throw new Error('Failed to fetch stats');
                 const data = await response.json();
-                
+
                 // Update basic stats UI
                 document.getElementById('stat-total-vessels').textContent = data.total_active_ships || 0;
                 document.getElementById('stat-avg-speed').innerHTML = `${data.average_speed_overall || 0} <span class="text-xs font-normal text-slate-400">kn</span>`;
-                
+
                 // Update charts UI
                 updateCharts(data);
             } catch (err) {
@@ -570,9 +596,9 @@
                 const response = await fetch(`${API_BASE_URL}/api/ships`);
                 if (!response.ok) throw new Error('Failed to fetch ships');
                 shipsData = await response.json();
-                
+
                 updateMarkersAndList();
-                
+
                 // Update heatmap if enabled
                 if (isHeatmapEnabled) {
                     drawHeatmap();
@@ -609,18 +635,18 @@
             const filteredShips = shipsData.filter(ship => {
                 const category = ship.ship_category;
                 const matchesFilter = activeFilters[category] !== false;
-                
-                const matchesSearch = !searchQuery || 
-                    ship.ship_name.toLowerCase().includes(searchQuery) || 
+
+                const matchesSearch = !searchQuery ||
+                    ship.ship_name.toLowerCase().includes(searchQuery) ||
                     ship.mmsi.toString().includes(searchQuery);
-                    
+
                 return matchesFilter && matchesSearch;
             });
 
             document.getElementById('vessel-list-count').textContent = filteredShips.length;
 
             const currentMmsis = new Set();
-            
+
             filteredShips.forEach(ship => {
                 const { mmsi, ship_name, ship_category, latitude, longitude, sog, heading, timestamp } = ship;
                 currentMmsis.add(mmsi);
@@ -658,12 +684,12 @@
                     const marker = L.marker(latLng, { icon: icon })
                         .addTo(map)
                         .bindPopup(popupContent);
-                        
+
                     marker.on('click', () => {
                         selectedMmsi = mmsi;
                         highlightSidebarItem(mmsi);
                     });
-                    
+
                     markers[mmsi] = marker;
                 }
             });
@@ -741,7 +767,7 @@
                 el.classList.remove('border-blue-500', 'bg-slate-800/60');
                 el.classList.add('border-transparent');
             });
-            
+
             const selectedItem = document.getElementById(`ship-list-item-${mmsi}`);
             if (selectedItem) {
                 selectedItem.classList.remove('border-transparent');
@@ -771,4 +797,5 @@
         init();
     </script>
 </body>
+
 </html>

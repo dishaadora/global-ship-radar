@@ -3,17 +3,68 @@ import sqlite3
 import pandas as pd
 import numpy as np
 
-def clean_and_ingest(csv_filename="raw_ais_data.csv", db_filename="ships.db"):
+def clean_and_ingest(json_filename="raw_ais_data.json", db_filename="ships.db"):
     print("Starting AIS Data Pipeline...")
     
-    if not os.path.exists(csv_filename):
-        raise FileNotFoundError(f"Source raw data file '{csv_filename}' not found. Please run generator first.")
+    if not os.path.exists(json_filename):
+        raise FileNotFoundError(f"Source raw data file '{json_filename}' not found. Please run generator first.")
         
     # 1. Load the raw data
-    print(f"Reading raw data from {csv_filename}...")
-    df = pd.read_csv(csv_filename)
+    print(f"Reading raw data from {json_filename}...")
+    import json
+    with open(json_filename, 'r', encoding='utf-8') as f:
+        raw_records = json.load(f)
+    initial_count = len(raw_records)
+    print(f"Loaded {initial_count} total messages.")
+    
+    # Extract static vessel details (MMSI -> Type)
+    mmsi_to_type = {}
+    for r in raw_records:
+        if r.get("MessageType") == "ShipStaticData":
+            meta = r.get("MetaData", {})
+            mmsi = meta.get("MMSI")
+            msg = r.get("Message", {})
+            static_data = msg.get("ShipStaticData", {})
+            ship_type = static_data.get("Type")
+            if mmsi and ship_type is not None:
+                mmsi_to_type[mmsi] = ship_type
+                
+    # Extract position report records
+    parsed_records = []
+    for r in raw_records:
+        if r.get("MessageType") == "PositionReport":
+            meta = r.get("MetaData", {})
+            msg = r.get("Message", {})
+            pos_data = msg.get("PositionReport", {})
+            
+            mmsi = meta.get("MMSI") or pos_data.get("Mmsi")
+            ship_name = meta.get("ShipName")
+            timestamp = meta.get("time_utc")
+            
+            lat = meta.get("latitude") or pos_data.get("Latitude")
+            lon = meta.get("longitude") or pos_data.get("Longitude")
+            sog = pos_data.get("Sog")
+            cog = pos_data.get("Cog")
+            heading = pos_data.get("TrueHeading")
+            
+            # Lookup type code from static data map
+            type_code = mmsi_to_type.get(mmsi)
+            
+            parsed_records.append({
+                "mmsi": mmsi,
+                "ship_name": ship_name,
+                "ship_type_code": type_code,
+                "latitude": lat,
+                "longitude": lon,
+                "sog": sog,
+                "cog": cog,
+                "heading": heading,
+                "timestamp": timestamp
+            })
+            
+    df = pd.DataFrame(parsed_records)
     initial_count = len(df)
-    print(f"Loaded {initial_count} raw records.")
+    print(f"Extracted {initial_count} position reports for ingestion.")
     
     # 2. Parse timestamps to uniform format
     print("Normalizing timestamps...")
